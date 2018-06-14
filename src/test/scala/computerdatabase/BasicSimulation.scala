@@ -26,6 +26,15 @@ class BasicSimulation extends Simulation {
       .get("/users/me"))
     .exec(http("request_orders")
       .get("/orders/?statuses=APPROVED,ACKNOWLEDGED,IN_PROGRESS,DELIVERED&scope=SCOPE_CONSUMER_UNIT&from=2018-05-16T21:00:00.000Z&to=2018-06-14T20:59:59.999Z"))
+    .pause(1000 milliseconds)
+    .exec(http("request_orders")
+      .get("/orders/?statuses=APPROVED,ACKNOWLEDGED,IN_PROGRESS,DELIVERED&scope=SCOPE_CONSUMER_UNIT&from=2018-05-16T21:00:00.000Z&to=2018-06-14T20:59:59.999Z"))
+    .pause(1000 milliseconds)
+    .exec(http("request_orders")
+      .get("/orders/?statuses=APPROVED,ACKNOWLEDGED,IN_PROGRESS,DELIVERED&scope=SCOPE_CONSUMER_UNIT&from=2018-05-16T21:00:00.000Z&to=2018-06-14T20:59:59.999Z"))
+    .pause(1000 milliseconds)
+    .exec(http("request_orders")
+      .get("/orders/?statuses=APPROVED,ACKNOWLEDGED,IN_PROGRESS,DELIVERED&scope=SCOPE_CONSUMER_UNIT&from=2018-05-16T21:00:00.000Z&to=2018-06-14T20:59:59.999Z"))
 
   // val scn = scenario("Scenario Name") // A scenario is a chain of requests and pauses
   //   .exec(http("request_1")
@@ -62,5 +71,5 @@ class BasicSimulation extends Simulation {
   //     .formParam("""discontinued""", """""")
   //     .formParam("""company""", """37"""))
 
-  setUp(scn.inject(atOnceUsers(1)).protocols(httpConf))
+  setUp(scn.inject(atOnceUsers(5)).protocols(httpConf))
 }
