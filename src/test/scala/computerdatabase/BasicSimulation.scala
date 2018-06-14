@@ -10,15 +10,16 @@ class BasicSimulation extends Simulation {
   // mvn gatling:test -Dgatling.simulationClass=computerdatabase.BasicSimulation
   //
   // TODO Extract cookie and from/to-query params to vars or environment variables.
+  // Could also use: https://gatling.io/docs/2.3/http/http_helpers/
   // 
 
   val httpConf = http
-    .baseURL("http://computer-database.gatling.io") // Here is the root for all relative URLs
+    .baseURL("https://testipaketti.pshp.fi/rest/orderer/v1") // Here is the root for all relative URLs
     .acceptHeader("text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8") // Here are the common headers
     .acceptEncodingHeader("gzip, deflate")
     .acceptLanguageHeader("en-US,en;q=0.5")
+    .header("Login9F8E8C5DD064795235F642E90258B4662A49F0CAF882167920EE39AC5711890D3233353288", "Br20iOT0u7HPAlTyIgZUhrLV7Q7oAGhJ1X3GBz4dJHI=")
     .userAgentHeader("Mozilla/5.0 (Macintosh; Intel Mac OS X 10.8; rv:16.0) Gecko/20100101 Firefox/16.0")
-    .header("LoginF599BE64D22EE753BB44CF49F11031A701543E0E968396D2FB657BD71192CE9A6443030978", "JXCdse1IxTAEic9dmRBGFKPaACpO+qK9G7hZ0hesITU=")
 
   val scn = scenario("Scenario Name") // A scenario is a chain of requests and pauses
     .exec(http("request_me")
