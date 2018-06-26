@@ -14,27 +14,46 @@ class BasicSimulation extends Simulation {
   // 
 
   val httpConf = http
-    .baseURL("https://testipaketti.pshp.fi/rest/orderer/v1") // Here is the root for all relative URLs
+    // .baseURL("https://testipaketti.pshp.fi/rest/orderer/v1") // Here is the root for all relative URLs
+    .baseURL("https://testauspaketti.pshp.fi/rest/orderer/v1") // Here is the root for all relative URLs
     .acceptHeader("text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8") // Here are the common headers
     .acceptEncodingHeader("gzip, deflate")
     .acceptLanguageHeader("en-US,en;q=0.5")
-    .header("Login9F8E8C5DD064795235F642E90258B4662A49F0CAF882167920EE39AC5711890D3233353288", "Br20iOT0u7HPAlTyIgZUhrLV7Q7oAGhJ1X3GBz4dJHI=")
+    .header("LoginB775ED6AD9DEE7B72C8C033FF2FF9632B8BFEC525768750B02A8B2FE0CCA889E4682806548", "PCq4UVtFK2oUZjQbgvvnBtGAqNxtC+vcIKO+DnuZfCw=")
     .userAgentHeader("Mozilla/5.0 (Macintosh; Intel Mac OS X 10.8; rv:16.0) Gecko/20100101 Firefox/16.0")
 
   val scn = scenario("Scenario Name") // A scenario is a chain of requests and pauses
     .exec(http("request_me")
       .get("/users/me"))
+
+    // Kuljettaja
+
     .exec(http("request_orders")
-      .get("/orders/?statuses=APPROVED,ACKNOWLEDGED,IN_PROGRESS,DELIVERED&scope=SCOPE_CONSUMER_UNIT&from=2018-05-16T21:00:00.000Z&to=2018-06-14T20:59:59.999Z"))
+      .get("/orders/?statuses=APPROVED,CANCELED,ACKNOWLEDGED,IN_PROGRESS,COMPLETED,DELIVERED&from=2018-06-25T18:00:00.000Z&to=2018-06-27T00:00:00.000Z&criteria=TARGET_TIME&scope=SCOPE_PROVIDER_UNIT"))
     .pause(1000 milliseconds)
     .exec(http("request_orders")
-      .get("/orders/?statuses=APPROVED,ACKNOWLEDGED,IN_PROGRESS,DELIVERED&scope=SCOPE_CONSUMER_UNIT&from=2018-05-16T21:00:00.000Z&to=2018-06-14T20:59:59.999Z"))
+      .get("/orders/?statuses=APPROVED,CANCELED,ACKNOWLEDGED,IN_PROGRESS,COMPLETED,DELIVERED&from=2018-06-25T18:00:00.000Z&to=2018-06-27T00:00:00.000Z&criteria=TARGET_TIME&scope=SCOPE_PROVIDER_UNIT"))
     .pause(1000 milliseconds)
     .exec(http("request_orders")
-      .get("/orders/?statuses=APPROVED,ACKNOWLEDGED,IN_PROGRESS,DELIVERED&scope=SCOPE_CONSUMER_UNIT&from=2018-05-16T21:00:00.000Z&to=2018-06-14T20:59:59.999Z"))
+      .get("/orders/?statuses=APPROVED,CANCELED,ACKNOWLEDGED,IN_PROGRESS,COMPLETED,DELIVERED&from=2018-06-25T18:00:00.000Z&to=2018-06-27T00:00:00.000Z&criteria=TARGET_TIME&scope=SCOPE_PROVIDER_UNIT"))
     .pause(1000 milliseconds)
     .exec(http("request_orders")
-      .get("/orders/?statuses=APPROVED,ACKNOWLEDGED,IN_PROGRESS,DELIVERED&scope=SCOPE_CONSUMER_UNIT&from=2018-05-16T21:00:00.000Z&to=2018-06-14T20:59:59.999Z"))
+      .get("/orders/?statuses=APPROVED,CANCELED,ACKNOWLEDGED,IN_PROGRESS,COMPLETED,DELIVERED&from=2018-06-25T18:00:00.000Z&to=2018-06-27T00:00:00.000Z&criteria=TARGET_TIME&scope=SCOPE_PROVIDER_UNIT"))
+
+    // Tilaaja
+
+    // .exec(http("request_orders")
+    //   .get("/orders/?statuses=APPROVED,ACKNOWLEDGED,IN_PROGRESS,DELIVERED&scope=SCOPE_CONSUMER_UNIT&from=2018-05-16T21:00:00.000Z&to=2018-06-14T20:59:59.999Z"))
+    // .pause(1000 milliseconds)
+    // .exec(http("request_orders")
+    //   .get("/orders/?statuses=APPROVED,ACKNOWLEDGED,IN_PROGRESS,DELIVERED&scope=SCOPE_CONSUMER_UNIT&from=2018-05-16T21:00:00.000Z&to=2018-06-14T20:59:59.999Z"))
+    // .pause(1000 milliseconds)
+    // .exec(http("request_orders")
+    //   .get("/orders/?statuses=APPROVED,ACKNOWLEDGED,IN_PROGRESS,DELIVERED&scope=SCOPE_CONSUMER_UNIT&from=2018-05-16T21:00:00.000Z&to=2018-06-14T20:59:59.999Z"))
+    // .pause(1000 milliseconds)
+    // .exec(http("request_orders")
+    //   .get("/orders/?statuses=APPROVED,ACKNOWLEDGED,IN_PROGRESS,DELIVERED&scope=SCOPE_CONSUMER_UNIT&from=2018-05-16T21:00:00.000Z&to=2018-06-14T20:59:59.999Z"))
+
 
   // val scn = scenario("Scenario Name") // A scenario is a chain of requests and pauses
   //   .exec(http("request_1")
@@ -71,5 +90,5 @@ class BasicSimulation extends Simulation {
   //     .formParam("""discontinued""", """""")
   //     .formParam("""company""", """37"""))
 
-  setUp(scn.inject(atOnceUsers(5)).protocols(httpConf))
+  setUp(scn.inject(atOnceUsers(20)).protocols(httpConf))
 }
